@@ -68,12 +68,15 @@ func main() {
 	// результат подписки на инструменты это канал с определенным типом информации, при повторном вызове функции
 	// подписки(например на свечи), возвращаемый канал можно игнорировать, так как при первом вызове он уже был получен
 	firstInstrumetsGroup := []string{"BBG004730N88", "BBG00475KKY8", "BBG004RVFCY3"}
-	candleChan, err := firstMDStream.SubscribeCandle(firstInstrumetsGroup, pb.SubscriptionInterval_SUBSCRIPTION_INTERVAL_ONE_MINUTE, true)
+	candleChan := firstMDStream.GetCandlesChannel()
+	err = firstMDStream.SubscribeCandle(firstInstrumetsGroup, pb.SubscriptionInterval_SUBSCRIPTION_INTERVAL_ONE_MINUTE, true)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}
 
-	tradesChan, err := firstMDStream.SubscribeTrade(firstInstrumetsGroup)
+	tradesChan := firstMDStream.GetTradesChannel()
+
+	err = firstMDStream.SubscribeTrades(firstInstrumetsGroup)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}
@@ -125,12 +128,14 @@ func main() {
 
 	// доступные значения глубины стакана: 1, 10, 20, 30, 40, 50
 	secondInstrumetsGroup := []string{"BBG004S681W1", "BBG004731354"}
-	obChan, err := secondMDStream.SubscribeOrderBook(secondInstrumetsGroup, 10)
+	obChan := secondMDStream.GetOrderBooksChannel()
+	err = secondMDStream.SubscribeOrderBook(secondInstrumetsGroup, 10)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}
 
-	lastPriceChan, err := secondMDStream.SubscribeLastPrice(secondInstrumetsGroup)
+	lastPriceChan := secondMDStream.GetLastPricesChannel()
+	err = secondMDStream.SubscribeLastPrice(secondInstrumetsGroup)
 	if err != nil {
 		logger.Errorf(err.Error())
 	}

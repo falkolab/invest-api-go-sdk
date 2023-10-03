@@ -129,6 +129,8 @@ func setDefaultConfig(conf *Config) {
 
 type Logger interface {
 	Infof(template string, args ...any)
+	Warnf(template string, args ...any)
+	Debugf(template string, args ...any)
 	Errorf(template string, args ...any)
 	Fatalf(template string, args ...any)
 }
@@ -137,21 +139,6 @@ type Logger interface {
 func (c *Client) NewMarketDataStreamClient() *MarketDataStreamClient {
 	pbClient := pb.NewMarketDataStreamServiceClient(c.conn)
 	return &MarketDataStreamClient{
-		conn:     c.conn,
-		config:   c.Config,
-		logger:   c.Logger,
-		ctx:      c.ctx,
-		pbClient: pbClient,
-	}
-}
-
-// NewMDStreamClient - создание клиента для сервиса стримов маркетадаты
-//
-// Deprecated: Use NewMarketDataStreamClient
-func (c *Client) NewMDStreamClient() *MDStreamClient {
-	pbClient := pb.NewMarketDataStreamServiceClient(c.conn)
-	return &MDStreamClient{
-		conn:     c.conn,
 		config:   c.Config,
 		logger:   c.Logger,
 		ctx:      c.ctx,
